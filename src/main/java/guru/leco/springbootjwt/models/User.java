@@ -3,10 +3,7 @@ package guru.leco.springbootjwt.models;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
@@ -23,6 +20,7 @@ public class User implements Serializable {
     private String username;
 
     @NotBlank
+    @Column(precision = 60)
     private String password;
 
     private String name;

@@ -5,7 +5,6 @@ import guru.leco.springbootjwt.models.User;
 import guru.leco.springbootjwt.repositories.UserRepository;
 import guru.leco.springbootjwt.resources.responses.UserResponse;
 import guru.leco.springbootjwt.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
