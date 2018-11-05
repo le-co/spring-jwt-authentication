@@ -2,15 +2,15 @@ package guru.leco.springbootjwt.services;
 
 import java.util.List;
 
-public interface CrudService<T, ID> {
+public interface CrudService<T, S> {
 
-    T save(T object);
+    T save(S object);
 
-    T findById(ID id);
+    T findById(Integer id);
 
     List<T> findAll();
 
-    void removeById(ID id);
+    void removeById(Integer id);
 
-    T update(ID id, T object);
+    T update(Integer id, S object);
 }

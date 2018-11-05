@@ -1,8 +1,9 @@
 package guru.leco.springbootjwt.services;
 
 import guru.leco.springbootjwt.models.User;
+import guru.leco.springbootjwt.resources.responses.UserResponse;
 
-public interface UserService extends CrudService<User, Integer> {
+public interface UserService extends CrudService<UserResponse, User> {
 
-    User authentication(String username, String password);
+    UserResponse authentication(String username, String password);
 }

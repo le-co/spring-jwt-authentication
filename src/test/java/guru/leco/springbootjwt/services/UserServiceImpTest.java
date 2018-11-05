@@ -1,6 +1,7 @@
 package guru.leco.springbootjwt.services;
 
 import guru.leco.springbootjwt.models.User;
+import guru.leco.springbootjwt.resources.responses.UserResponse;
 import guru.leco.springbootjwt.services.jpa.UserServiceImp;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,33 +25,34 @@ public class UserServiceImpTest {
     public void setUp() throws Exception {
         this.user = new User();
         user.setUsername("lcosta5");
-        user.setPassword("abc1234");
+        user.setName("Leandro costa");
+        user.setCellphone("111111111");
+        user.setCity("test");
+        user.setPassword("aaaaaa");
     }
 
     @Test
     public void testCreateUser() {
-        User userSaved = this.userService.save(user);
+        UserResponse userSaved = this.userService.save(user);
         assert userSaved.getId() != null;
     }
 
     @Test
     public void testAuthenticationSuccess() {
-        User userSaved = this.userService.save(user);
+        UserResponse userSaved = this.userService.save(user);
         assert userSaved.getId() != null;
 
-        User user = this.userService.authentication(userSaved.getUsername(), userSaved.getPassword());
+        UserResponse authentication = this.userService.authentication(userSaved.getUsername(), this.user.getPassword());
 
-        assert user != null;
-
-        assert user.getId() == userSaved.getId();
+        assert authentication != null;
     }
 
     @Test
     public void testFindAll() {
-        User userSaved = this.userService.save(user);
+        UserResponse userSaved = this.userService.save(user);
         assert userSaved.getId() != null;
 
-        List<User> users = this.userService.findAll();
+        List<UserResponse> users = this.userService.findAll();
 
         assert users.size() > 0;
     }

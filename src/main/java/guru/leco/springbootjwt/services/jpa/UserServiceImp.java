@@ -1,38 +1,42 @@
 package guru.leco.springbootjwt.services.jpa;
 
+import guru.leco.springbootjwt.converter.UserDomainToUserResponse;
 import guru.leco.springbootjwt.models.User;
 import guru.leco.springbootjwt.repositories.UserRepository;
+import guru.leco.springbootjwt.resources.responses.UserResponse;
 import guru.leco.springbootjwt.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Profile("jpa")
 public class UserServiceImp implements UserService {
 
     private UserRepository userRepository;
+    private UserDomainToUserResponse domainToUserResponse;
 
-    @Autowired
-    public UserServiceImp(UserRepository userRepository) {
+    public UserServiceImp(UserRepository userRepository, UserDomainToUserResponse domainToUserResponse) {
         this.userRepository = userRepository;
+        this.domainToUserResponse = domainToUserResponse;
     }
 
     @Override
-    public User save(User object) {
-        return this.userRepository.save(object);
+    public UserResponse save(User object) {
+        return this.domainToUserResponse.convert(this.userRepository.save(object));
     }
 
     @Override
-    public User findById(Integer id) {
-        return this.userRepository.getOne(id);
+    public UserResponse findById(Integer id) {
+        return this.domainToUserResponse.convert(this.userRepository.getOne(id));
     }
 
     @Override
-    public List<User> findAll() {
-        return this.findAll();
+    public List<UserResponse> findAll() {
+        return this.userRepository.findAll().stream().map(p -> this.domainToUserResponse.convert(p)).collect(Collectors.toList());
     }
 
     @Override
@@ -41,20 +45,20 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User update(Integer id, User object) {
+    public UserResponse update(Integer id, User object) {
         User user = this.userRepository.getOne(id);
         if (user != null) {
-            this.userRepository.save(object);
+            return this.domainToUserResponse.convert(this.userRepository.save(object));
         }
         throw new NullPointerException("User does not exists");
     }
 
     @Override
-    public User authentication(String username, String password) {
-        User user = this.userRepository.findByUsernameAndPassword(username, password);
+    public UserResponse authentication(String username, String password) {
+        User user = this.userRepository.findFirstByUsernameAndPassword(username, password);
         if (user == null) {
             throw new NullPointerException("Authentication fail, user or password not match!!!");
         }
-        return user;
+        return this.domainToUserResponse.convert(user);
     }
 }
